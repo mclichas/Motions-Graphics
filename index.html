@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #0a0a0f;
+        --ink: #ffffff;
+        --accent: #ff3b6b;
+        --accent2: #4f8cff;
+        --font-display: "Inter", "Segoe UI", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ground);
+        font-family: var(--font-display);
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      /* Grid background */
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 80px 80px;
+      }
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.5;
+      }
+      .blob.a { width: 500px; height: 500px; background: var(--accent); top: -120px; left: -120px; }
+      .blob.b { width: 600px; height: 600px; background: var(--accent2); bottom: -200px; right: -150px; }
+      .title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: var(--ink);
+      }
+      .title .line1 {
+        font-size: 120px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        display: block;
+      }
+      .title .line2 {
+        font-size: 36px;
+        font-weight: 400;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        opacity: 0.7;
+        margin-top: 24px;
+        display: block;
+      }
+      .ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 700px;
+        height: 700px;
+        margin: -350px 0 0 -350px;
+        border: 2px solid rgba(255,255,255,0.15);
+        border-radius: 50%;
+      }
+      .ring2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 900px;
+        height: 900px;
+        margin: -450px 0 0 -450px;
+        border: 1px dashed rgba(255,255,255,0.08);
+        border-radius: 50%;
+      }
+      .dot-rotor {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+      }
+      .dot {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: var(--accent);
+        border-radius: 50%;
+        top: -320px;
+        left: -6px;
+      }
+      .corner {
+        position: absolute;
+        font-size: 18px;
+        color: rgba(255,255,255,0.4);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .corner.tl { top: 60px; left: 60px; }
+      .corner.br { bottom: 60px; right: 60px; }
+      .bar {
+        position: absolute;
+        bottom: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 4px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="10"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div class="grid clip" data-start="0" data-duration="10" data-track-index="0"></div>
+      <div class="blob a clip" data-start="0" data-duration="10" data-track-index="1"></div>
+      <div class="blob b clip" data-start="0" data-duration="10" data-track-index="1"></div>
+
+      <div class="ring clip" data-start="0.5" data-duration="9.5" data-track-index="2" id="ring1"></div>
+      <div class="ring2 clip" data-start="0.8" data-duration="9.2" data-track-index="2" id="ring2"></div>
+
+      <div class="title clip" data-start="1" data-duration="8" data-track-index="3" id="title">
+        <span class="line1">MOTION</span>
+        <span class="line2">Graphics</span>
+      </div>
+
+      <div class="dot-rotor clip" data-start="0" data-duration="10" data-track-index="4" id="dotrotor">
+        <div class="dot" id="dot"></div>
+      </div>
+
+      <div class="corner tl clip" data-start="0.3" data-duration="9.7" data-track-index="5">HyperFrames</div>
+      <div class="corner br clip" data-start="0.3" data-duration="9.7" data-track-index="5">Motion Test</div>
+
+      <div class="bar clip" data-start="1" data-duration="8" data-track-index="6">
+        <div class="bar-fill" id="barfill"></div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Blobs drift
+      tl.to(".blob.a", { x: 120, y: 80, duration: 10, ease: "sine.inOut" }, 0);
+      tl.to(".blob.b", { x: -100, y: -60, duration: 10, ease: "sine.inOut" }, 0);
+
+      // Rings rotate
+      tl.to("#ring1", { rotation: 360, duration: 10, ease: "none" }, 0.5);
+      tl.to("#ring2", { rotation: -180, duration: 10, ease: "none" }, 0.8);
+
+      // Title entrance
+      tl.fromTo("#title", { opacity: 0, y: 60, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, ease: "power4.out" }, 1);
+      // Title exit
+      tl.to("#title", { opacity: 0, y: -40, filter: "blur(8px)", duration: 0.6, ease: "power2.in" }, 8.4);
+
+      // Dot orbit (rotor rotates, dot stays offset)
+      tl.to("#dotrotor", { rotation: 360, duration: 8, ease: "none" }, 0);
+
+      // Bar fill
+      tl.to("#barfill", { width: "100%", duration: 7, ease: "power2.inOut" }, 1.2);
+
+      // Corners fade in
+      tl.fromTo(".corner", { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.1, ease: "power2.out" }, 0.3);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+
+      // Browser preview helper: auto-play only when not driven by the HyperFrames renderer.
+      setTimeout(() => {
+        if (!window.__renderReady) {
+          tl.play();
+        }
+      }, 50);
+    </script>
+  </body>
+</html>
