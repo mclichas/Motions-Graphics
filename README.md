@@ -16,6 +16,17 @@ Proyecto de Motion Graphics con [HyperFrames](https://hyperframes.heygen.com) (H
 3. En la celda de upload, sube `motion-graphics.zip`.
 4. Descarga `output.mp4`.
 
+## Proyecto de muestra (sample/)
+
+Incluye un proyecto de ejemplo de Motion Graphics con un personaje (Pixel) en 3 escenas de 5s:
+- `sample/index.html` — composicion monolitica (15s, 1920x1080).
+- `sample.zip` — listo para subir a Colab.
+- Escena 1: presentacion ("Hola, soy Pixel").
+- Escena 2: celebracion ("Motion Graphics" + particulas).
+- Escena 3: despedida ("Hasta pronto" + corazon).
+
+Para renderizarlo, sube `sample.zip` en la celda 4 del notebook.
+
 ## Notas
 
 - El timeline está pausado (`paused: true`) para el render determinista de HyperFrames; en el navegador se auto-reproduce como preview.
